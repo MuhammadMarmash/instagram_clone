@@ -38,12 +38,13 @@
         android:layout_height="52dp"
         android:layout_marginTop="44dp"
         android:background="@color/editTextBackground"
+        android:drawableStart="@drawable/email_icon"
+        android:drawablePadding="10dp"
         android:ems="10"
         android:hint="@string/email"
         android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         android:textColor="@color/textColor"
-        android:drawableStart="@drawable/email_icon"
         android:textColorHint="@color/textColor"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
@@ -56,9 +57,12 @@
         android:layout_height="52dp"
         android:layout_marginTop="20dp"
         android:background="@color/editTextBackground"
-        android:ems="10"        android:drawableStart="@drawable/password_icon"
+        android:drawableStart="@drawable/password_icon"
+        android:drawablePadding="10dp"
 
+        android:ems="10"
         android:hint="@string/password"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
         android:textColor="@color/textColor"
         android:textColorHint="@color/textColor"
@@ -66,8 +70,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/emailEditText"
         app:layout_constraintTop_toBottomOf="@+id/emailEditText"
-        tools:ignore="TextContrastCheck"
-        android:importantForAutofill="no" />
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/signUpButton"
