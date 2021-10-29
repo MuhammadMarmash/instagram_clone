@@ -16,8 +16,6 @@ import android.view.MotionEvent
 import android.view.View.OnTouchListener
 
 
-
-
 class SignUpActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
     private lateinit var nameEditText: EditText
@@ -85,13 +83,25 @@ class SignUpActivity : AppCompatActivity() {
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= passwordEditText.right - passwordEditText.compoundDrawables[2].bounds.width()
                 ) {
-                    icon = if (icon == 0){
-                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.closed_eye_icon, 0)
-                        passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    icon = if (icon == 0) {
+                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.password_icon,
+                            0,
+                            R.drawable.closed_eye_icon,
+                            0
+                        )
+                        passwordEditText.transformationMethod =
+                            HideReturnsTransformationMethod.getInstance()
                         1
-                    }else{
-                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.open_eye_icon, 0)
-                        passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+                    } else {
+                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.password_icon,
+                            0,
+                            R.drawable.open_eye_icon,
+                            0
+                        )
+                        passwordEditText.transformationMethod =
+                            PasswordTransformationMethod.getInstance()
 
                         0
                     }

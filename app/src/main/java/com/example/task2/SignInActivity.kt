@@ -45,7 +45,7 @@ class SignInActivity : AppCompatActivity() {
                 ) {
                     icon = if (icon == 0) {
                         passwordEditText.setCompoundDrawablesWithIntrinsicBounds(
-                            0,
+                            R.drawable.password_icon,
                             0,
                             R.drawable.closed_eye_icon,
                             0
@@ -55,7 +55,7 @@ class SignInActivity : AppCompatActivity() {
                         1
                     } else {
                         passwordEditText.setCompoundDrawablesWithIntrinsicBounds(
-                            0,
+                            R.drawable.password_icon,
                             0,
                             R.drawable.open_eye_icon,
                             0
