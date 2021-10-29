@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_header_selector"
+    android:background="@drawable/app_background"
     tools:context=".SignInActivity">
 
     <ImageView
@@ -37,7 +37,7 @@
         android:layout_width="374dp"
         android:layout_height="52dp"
         android:layout_marginTop="20dp"
-        android:background="@color/editTextBackground"
+        android:background="@drawable/circle_up_edittext"
         android:drawableStart="@drawable/email_icon"
         android:drawablePadding="10dp"
         android:ems="10"
@@ -94,8 +94,9 @@
         android:layout_width="0dp"
         android:layout_height="52dp"
         android:layout_marginTop="20dp"
-        android:background="@color/editTextBackground"
+        android:background="@drawable/circle_bottom_edittext"
         android:drawableStart="@drawable/password_icon"
+        android:drawableEnd="@drawable/open_eye_icon"
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="@string/password"

@@ -1,13 +1,22 @@
 package com.example.task2
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import android.view.MotionEvent
+
+import android.view.View.OnTouchListener
+
+
+
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
@@ -19,6 +28,9 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var signUpWithFacebookText: TextView
     private lateinit var signInText: TextView
 
+    private var icon = 0
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -40,7 +52,11 @@ class SignUpActivity : AppCompatActivity() {
             ) {
                 Toast.makeText(this, "please fill all the fields", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "your account is ready please signIn into your account", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "your account is ready please signIn into your account",
+                    Toast.LENGTH_SHORT
+                ).show()
                 val intent = Intent(this, SignInActivity::class.java)
                 startActivity(intent)
             }
@@ -60,5 +76,29 @@ class SignUpActivity : AppCompatActivity() {
             val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
         }
+
+        passwordEditText.setOnTouchListener(OnTouchListener { _, event ->
+//            val DRAWABLE_LEFT = 0
+//            val DRAWABLE_TOP = 1
+//            val DRAWABLE_RIGHT = 2
+//            val DRAWABLE_BOTTOM = 3
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= passwordEditText.right - passwordEditText.compoundDrawables[2].bounds.width()
+                ) {
+                    icon = if (icon == 0){
+                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.closed_eye_icon, 0)
+                        passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                        1
+                    }else{
+                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.open_eye_icon, 0)
+                        passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+
+                        0
+                    }
+                    return@OnTouchListener true
+                }
+            }
+            return@OnTouchListener false
+        })
     }
 }
