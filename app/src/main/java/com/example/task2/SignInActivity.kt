@@ -13,14 +13,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.example.task2.databinding.ActivitySignInBinding
+import com.example.task2.databinding.ActivitySignUpBinding
 
 class SignInActivity : AppCompatActivity() {
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var loginButton: Button
-    private lateinit var getHelpSigningText: TextView
-    private lateinit var loginWithFacebookText: TextView
-    private lateinit var signUpText: TextView
+    lateinit var binding: ActivitySignInBinding
     private var icon = 0
 
     @SuppressLint("ClickableViewAccessibility")
@@ -28,39 +25,35 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        emailEditText = findViewById(R.id.emailEditText)
-        passwordEditText = findViewById(R.id.passwordEditText)
-        loginButton = findViewById(R.id.signUpButton)
-        getHelpSigningText = findViewById(R.id.helpText)
-        loginWithFacebookText = findViewById(R.id.logInWithFacebookText)
-        signUpText = findViewById(R.id.signInText)
+        binding = ActivitySignInBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        passwordEditText.setOnTouchListener(View.OnTouchListener { _, event ->
+        binding.passwordEditText.setOnTouchListener(View.OnTouchListener { _, event ->
 //            val DRAWABLE_LEFT = 0
 //            val DRAWABLE_TOP = 1
 //            val DRAWABLE_RIGHT = 2
 //            val DRAWABLE_BOTTOM = 3
             if (event.action == MotionEvent.ACTION_UP) {
-                if (event.rawX >= passwordEditText.right - passwordEditText.compoundDrawables[2].bounds.width()
+                if (event.rawX >= binding.passwordEditText.right - binding.passwordEditText.compoundDrawables[2].bounds.width()
                 ) {
                     icon = if (icon == 0) {
-                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(
+                        binding.passwordEditText.setCompoundDrawablesWithIntrinsicBounds(
                             R.drawable.password_icon,
                             0,
                             R.drawable.closed_eye_icon,
                             0
                         )
-                        passwordEditText.transformationMethod =
+                        binding.passwordEditText.transformationMethod =
                             HideReturnsTransformationMethod.getInstance()
                         1
                     } else {
-                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(
+                        binding.passwordEditText.setCompoundDrawablesWithIntrinsicBounds(
                             R.drawable.password_icon,
                             0,
                             R.drawable.open_eye_icon,
                             0
                         )
-                        passwordEditText.transformationMethod =
+                        binding.passwordEditText.transformationMethod =
                             PasswordTransformationMethod.getInstance()
 
                         0
@@ -71,8 +64,8 @@ class SignInActivity : AppCompatActivity() {
             return@OnTouchListener false
         })
 
-        loginButton.setOnClickListener {
-            if (emailEditText.text.toString().isEmpty() || passwordEditText.text.toString()
+        binding.signUpButton.setOnClickListener {
+            if ( binding.emailEditText.text.toString().isEmpty() ||  binding.passwordEditText.text.toString()
                     .isEmpty()
             ) {
                 Toast.makeText(this, "please fill all the fields", Toast.LENGTH_SHORT).show()
@@ -83,17 +76,25 @@ class SignInActivity : AppCompatActivity() {
             }
         }
 
-        getHelpSigningText.setOnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://help.instagram.com/"))
-            startActivity(browserIntent)
+        binding.helpText.setOnClickListener {
+//            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://help.instagram.com/"))
+//            startActivity(browserIntent)
+
+            val intent = Intent(this, WebViewActivity::class.java)
+            intent.putExtra("url", "https://help.instagram.com/")
+            startActivity(intent)
         }
 
-        loginWithFacebookText.setOnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/"))
-            startActivity(browserIntent)
+        binding.logInWithFacebookText.setOnClickListener {
+//            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/"))
+//            startActivity(browserIntent)
+
+            val intent = Intent(this, WebViewActivity::class.java)
+            intent.putExtra("url", "https://www.facebook.com/")
+            startActivity(intent)
         }
 
-        signUpText.setOnClickListener {
+        binding.signInText.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
