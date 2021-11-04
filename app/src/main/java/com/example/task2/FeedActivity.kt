@@ -1,21 +1,27 @@
 package com.example.task2
 
-import android.media.MediaPlayer
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.View
-import android.widget.MediaController
-import android.widget.SeekBar
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.OrientationHelper
+import com.example.task2.adapter.PostsAdapter
 import com.example.task2.databinding.ActivityFeedBinding
+import com.example.task2.models.Post
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import com.google.android.material.bottomsheet.BottomSheetDialog
+
 
 class FeedActivity : AppCompatActivity() {
     lateinit var binding: ActivityFeedBinding
-    var mediaController: MediaController? = null
-    private var playing = false
-    lateinit var runnable: Runnable
+    lateinit var postsList: ArrayList<Post>
+    private lateinit var postsAdapter: PostsAdapter
+    private val postImageList = listOf(R.raw.feed1, R.raw.feed2, R.raw.feed3)
+    private val profileImageList = listOf(R.raw.user1, R.raw.user2, R.raw.user3)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
@@ -23,70 +29,67 @@ class FeedActivity : AppCompatActivity() {
         binding = ActivityFeedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        if (mediaController == null) {
-            mediaController = MediaController(this)
-            binding.videoView.setMediaController(mediaController)
-        }
-
-        binding.videoView.apply {
-            setMediaController(mediaController)
-            setVideoURI(Uri.parse("android.resource://" + packageName + "/" + R.raw.pexels_peter_fowler))
-            requestFocus()
-            setOnClickListener {
-                playing = if (playing) {
-                    pause()
-                    false
-                } else {
-                    start()
-                    true
-                }
-            }
-//            setOnCompletionListener {
-//                Toast.makeText(context, "the video is completed", Toast.LENGTH_SHORT).show()
-//            }
-
-        }
-
-        binding.introductionText.setOnClickListener {
-            binding.seekBar1.visibility = View.VISIBLE
-            binding.stopButton.visibility = View.VISIBLE
-
-            val mediaPlayer = MediaPlayer.create(this, R.raw.what_is_instagram)
-            mediaPlayer.start()
-            binding.stopButton.setOnClickListener {
-                if (mediaPlayer.isPlaying) {
-                    mediaPlayer.pause()
-                    binding.stopButton.setImageResource(android.R.drawable.ic_media_play)
-                } else {
-                    mediaPlayer.start()
-                    binding.stopButton.setImageResource(android.R.drawable.ic_media_pause)
-                }
-            }
-
-            val handler = Handler(Looper.getMainLooper())
-            runnable = Runnable {
-                binding.seekBar1.progress = mediaPlayer.currentPosition
-                handler.postDelayed(runnable, 1000)
-            }
-            handler.postDelayed(runnable, 1000)
-
-            binding.seekBar1.apply {
-                max = mediaPlayer.duration
-                setOnSeekBarChangeListener(object :
-                    SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(
-                        seek: SeekBar, progress: Int, fromUser: Boolean
-                    ) {
-                        mediaPlayer.seekTo(progress * 1000)
-                    }
-
-                    override fun onStartTrackingTouch(seek: SeekBar) {
-                    }
-
-                    override fun onStopTrackingTouch(seek: SeekBar) {}
-                })
-            }
-        }
+        postsList = ArrayList()
+        postsList.add(Post("muhammad", postImageList.random(), profileImageList.random()))
+        postsList.add(Post("seif", postImageList.random(), profileImageList.random()))
+        postsList.add(Post("abdullah", postImageList.random(), profileImageList.random()))
+        postsList.add(Post("ahmad", postImageList.random(), profileImageList.random()))
+        setUpRecyclerView()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.mymenu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    // handle button activities
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id: Int = item.itemId
+        if (id == R.id.action_add) {
+            val dialog = BottomSheetDialog(this)
+            // on below line we are inflating a layout file which we have created.
+            val view = layoutInflater.inflate(R.layout.bottom_sheet, null)
+            val btnClose = view.findViewById<Button>(R.id.bottomSheetCancelButton)
+            btnClose.setOnClickListener {
+                dialog.dismiss()
+            }
+            val btnAdd = view.findViewById<Button>(R.id.bottomSheetAddButton)
+            val nameEditText = view.findViewById<EditText?>(R.id.bottomSheetNameEditText)
+            btnAdd.setOnClickListener {
+                if (nameEditText.text.toString().isEmpty()) {
+                    Toast.makeText(this, "you didn't add anything", Toast.LENGTH_SHORT).show()
+                } else {
+                    postsList.add(Post(nameEditText?.text.toString(), postImageList.random(), profileImageList.random()))
+                    dialog.dismiss()
+                    setUpRecyclerView()
+                }
+            }
+            // below line is use to set cancelable to avoid
+            // closing of dialog box when clicking on the screen.
+            dialog.setCancelable(true)
+            dialog.setContentView(view)
+            dialog.show()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setUpRecyclerView() {
+        postsAdapter = PostsAdapter(this, postsList)
+        binding.rvPosts.addItemDecoration(
+            DividerItemDecoration(
+                this,
+                OrientationHelper.VERTICAL
+            )
+        ) // to make divider
+        binding.rvPosts.adapter = postsAdapter
+    }
+
+    fun deleteContact(post: Post, position: Int) {
+        postsList.remove(post)
+//        setUpRecyclerView()
+        postsAdapter.notifyItemRemoved(position)
+
+    }
+
+
 }
