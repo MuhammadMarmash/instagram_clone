@@ -16,8 +16,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
 class FeedActivity : AppCompatActivity() {
-    lateinit var binding: ActivityFeedBinding
-    lateinit var postsList: ArrayList<Post>
+    private lateinit var binding: ActivityFeedBinding
+    private lateinit var postsList: ArrayList<Post>
     private lateinit var postsAdapter: PostsAdapter
     private val postImageList = listOf(R.raw.feed1, R.raw.feed2, R.raw.feed3)
     private val profileImageList = listOf(R.raw.user1, R.raw.user2, R.raw.user3)
